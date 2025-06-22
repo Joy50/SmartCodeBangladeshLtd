@@ -1,0 +1,118 @@
+:root {
+    --primary: #007bff;
+    --secondary: #1cc88a;
+    --dark: #5a5c69;
+    --light: #f8f9fc;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #222;
+}
+
+.text-white, 
+.text-white h1, 
+.text-white h2, 
+.text-white h3, 
+.text-white h4, 
+.text-white h5, 
+.text-white h6, 
+.text-white p, 
+.text-white a, 
+.text-white span, 
+.text-white li, 
+.text-white div {
+    color: white !important;
+}
+
+.navfont{
+    font-size: large;
+}
+
+.hero-section {
+    position: relative;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75));
+    z-index: 0;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: 3.8rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+}
+
+.hero-section p.lead {
+    font-size: 1.4rem;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.card, .service-card, .feature-item, .team-member-card {
+    border-radius: 1rem !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover,
+.service-card:hover,
+.feature-item:hover,
+.team-member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+
+/* Team member card styling */
+.team-member-card {
+    transition: transform 0.3s ease;
+}
+.team-member-card:hover {
+    transform: translateY(-5px);
+}
+.team-member-card img {
+    transition: transform 0.3s ease;
+}
+.team-member-card:hover img {
+    transform: scale(1.05);
+}

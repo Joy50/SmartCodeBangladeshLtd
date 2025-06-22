@@ -1,0 +1,108 @@
+{% load static %}
+<footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container">
+        <div class="row">
+            <!-- Company Info Column -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase mb-4">{{ settings.site_name }}</h5>
+                <p>Your trusted partner for innovative IT solutions and services.</p>
+                
+                <!-- Social Links -->
+                <div class="mt-4">
+                    <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links Column -->
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase mb-4">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#home" class="text-white">Home</a></li>
+                    {% if sections.about.show_section %}
+                    <li class="mb-2"><a href="#about" class="text-white">About</a></li>
+                    {% endif %}
+                    {% if sections.services.show_section %}
+                    <li class="mb-2"><a href="#services" class="text-white">Services</a></li>
+                    {% endif %}
+                    {% if sections.team.show_section %}
+                    <li class="mb-2"><a href="#team" class="text-white">Our Team</a></li>
+                    {% endif %}
+                    {% if sections.contact.show_section %}
+                    <li class="mb-2"><a href="#contact" class="text-white">Contact</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Services Column -->
+            {% if sections.services.show_section %}
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase mb-4">Services</h5>
+                <ul class="list-unstyled">
+                    {% for service in services|slice:":5" %}
+                    <li class="mb-2"><a href="#services" class="text-white">{{ service.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- Contact Info Column -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="text-uppercase mb-4">Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> House-783, Road 11, Avenue 3, Mirpur DOHS, Dhaka, Bangladesh</li>
+                    <li class="mb-2"><i class="fas fa-phone me-2"></i> +8801798606339</li>
+                    <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@smartcode.com.bd</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+
+        <!-- Copyright Row -->
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0">&copy; {{ current_year }} {{ settings.site_name }}. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item"><a href="#" class="text-white">Privacy Policy</a></li>
+                    <li class="list-inline-item"><a href="#" class="text-white">Terms of Service</a></li>
+                    <li class="list-inline-item"><a href="{% url 'admin:index' %}" class="text-white">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    footer a {
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    footer a:hover {
+        color: var(--primary) !important;
+    }
+    
+    footer .fab, footer .fas {
+        width: 20px;
+        text-align: center;
+    }
+    
+    footer ul li {
+        line-height: 1.6;
+    }
+</style>
+
+<script>
+    // Set current year in copyright
+    document.addEventListener('DOMContentLoaded', function() {
+        const yearElement = document.querySelector('.current-year');
+        if (yearElement) {
+            yearElement.textContent = new Date().getFullYear();
+        }
+    });
+</script>

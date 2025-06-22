@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- HERO SECTION WITH PARALLAX -->
+<header class="hero-section text-white text-center position-relative overflow-hidden parallax" style="background-image: url('{{ home_page.background_image.url }}'); background-attachment: fixed; background-size: cover; background-position: center; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div class="container py-5 z-index-1">
+        <div class="row align-items-center py-5">
+            <div class="col-lg-10 mx-auto animate__animated animate__fadeInUp">
+                <h1 class="display-3 fw-bolder mb-4">{{ home_page.title }}</h1>
+                <p class="lead mb-5 opacity-75">{{ home_page.subtitle }}</p>
+                <a href="{{ home_page.button_link }}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg animate__animated animate__zoomIn">{{ home_page.button_text }}</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ABOUT SECTION -->
+{% if sections.about.show_section %}
+<section class="py-5 parallax text-white" style="background-color: {{ sections.about.background_color }}; background-image: url('{% static 'img/about-bg.jpg' %}'); background-attachment: fixed; background-size: cover; background-position: center;" id="about">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0 animate__animated animate__fadeInLeft">
+                <h2 class="display-5 fw-bold mb-3">{{ sections.about.title }}</h2>
+                <p class="lead">{{ sections.about.subtitle }}</p>
+            </div>
+            <div class="col-lg-6 animate__animated animate__fadeInRight">
+                <p class="fs-5 line-height-lg" style="text-align: justify;">SmartCode Bangladesh Ltd. is a dynamic and innovative technology company dedicated to delivering comprehensive IT solutions that empower businesses to succeed in the digital age. With a strong focus on IT services, product supply, and implementation, we help organizations streamline operations, enhance productivity, and stay ahead of technological trends.
+
+Founded on the principles of integrity, excellence, and customer satisfaction, SmartCode Bangladesh Ltd. has built a reputation as a trusted partner for businesses of all sizes and industries. Our team of experienced professionals combines technical expertise with a deep understanding of business needs to provide customized solutions that drive real results.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- SERVICES SECTION -->
+{% if sections.services.show_section %}
+<section class="py-5 parallax text-white" style="background-color: {{ sections.services.background_color }}; background-image: url('{% static 'img/services-bg.jpg' %}'); background-attachment: fixed; background-size: cover; background-position: center;" id="services">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1>{{ sections.services.title }}</h1>
+            <p>{{ sections.services.subtitle }}</p>
+        </div>
+        <div class="row g-4">
+            {% for service in services %}
+            <div class="col-lg-4 col-md-6 animate__animated animate__fadeInUp">
+                <div class="card h-100 shadow border-0 text-dark">
+                    <div class="card-body text-center">
+                        <div class="mb-3"><i class="{{ service.icon_class }} fs-1 text-primary"></i></div>
+                        <h5 class="card-title">{{ service.title }}</h5>
+                        <p class="card-text" style="text-align: justify;">{{ service.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- PROJECTS SECTION -->
+{% if sections.projects.show_section %}
+<section id="projects" class="py-5 text-white" style="background-color: {{ sections.projects.background_color }};">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2>{{ sections.projects.title }}</h2>
+            <p>{{ sections.projects.subtitle }}</p>
+        </div>
+        <div class="mb-4 text-center">
+            <button class="btn btn-primary filter-btn" data-filter="all">All</button>
+            <button class="btn btn-primary filter-btn" data-filter="ongoing">Ongoing</button>
+            <button class="btn btn-primary filter-btn" data-filter="completed">Completed</button>
+            <button class="btn btn-primary filter-btn" data-filter="upcoming">Upcoming</button>
+        </div>
+        <div class="row g-4" id="project-list">
+            {% for project in projects %}
+            <div class="col-md-4 project-item" data-status="{{ project.status }}">
+                <div class="card h-100 shadow text-dark">
+                    <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const filter = this.dataset.filter;
+            document.querySelectorAll('.project-item').forEach(item => {
+                item.style.display = (filter === 'all' || item.dataset.status === filter) ? 'block' : 'none';
+            });
+        });
+    });
+</script>
+{% endif %}
+
+<!-- TEAM SECTION -->
+{% if sections.team.show_section %}
+<section id="team" class="py-5 text-white" style="background-color: {{ sections.team.background_color }};">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2>{{ sections.team.title }}</h2>
+            <p>{{ sections.team.subtitle }}</p>
+        </div>
+        <div class="row g-4">
+            {% for member in team_members %}
+            <div class="col-lg-3 col-md-6 animate__animated animate__fadeInUp">
+                <div class="card h-100 shadow border-0 text-center text-dark team-member-card">
+                    <div class="p-3 d-flex justify-content-center">
+                        <img src="{{ member.image.url }}" 
+                             class="img-fluid" 
+                             alt="{{ member.name }}" 
+                             style="max-height: 200px; width: auto; max-width: 100%;">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ member.name }}</h5>
+                        <p class="text-muted">{{ member.position }}</p>
+                        <p class="card-text" style="text-align: justify;">{{ member.bio|truncatewords:20 }}</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            {% if member.facebook %}
+                            <a href="{{ member.facebook }}" class="text-primary"><i class="fab fa-facebook-f"></i></a>
+                            {% endif %}
+                            {% if member.twitter %}
+                            <a href="{{ member.twitter }}" class="text-info"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                            {% if member.linkedin %}
+                            <a href="{{ member.linkedin }}" class="text-primary"><i class="fab fa-linkedin-in"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- NEWS SECTION -->
+{% if sections.news.show_section %}
+<section id="news" class="py-5 text-white" style="background-color: {{ sections.news.background_color }};">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2>{{ sections.news.title }}</h2>
+            <p>{{ sections.news.subtitle }}</p>
+        </div>
+        <div class="row g-4">
+            {% for news in news_list %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow text-dark">
+                    <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ news.title }}</h5>
+                        <p class="card-text">{{ news.summary|truncatewords:20 }}</p>
+                        <p class="text-muted small">{{ news.published_at|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CAREER SECTION -->
+{% if sections.career.show_section %}
+<section id="career" class="py-5 text-white" style="background-color: {{ sections.career.background_color }};">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2>{{ sections.career.title }}</h2>
+            <p>{{ sections.career.subtitle }}</p>
+        </div>
+        <div class="row g-4">
+            {% for job in careers %}
+            <div class="col-md-6">
+                <div class="p-4 bg-light border rounded shadow-sm text-dark">
+                    <h5>{{ job.title }}</h5>
+                    <p>{{ job.description|truncatewords:25 }}</p>
+                    <p class="text-muted small">Location: {{ job.location }} | Posted: {{ job.posted_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CONTACT SECTION -->
+{% if sections.contact.show_section %}
+<section class="py-5 text-white" style="background-color: {{ sections.contact.background_color }};" id="contact">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2>{{ sections.contact.title }}</h2>
+            <p>{{ sections.contact.subtitle }}</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-7 mx-auto animate__animated animate__fadeInUp">
+                <form class="p-4 p-md-5 border rounded-3 bg-white shadow-lg text-dark">
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-lg" placeholder="Your Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control form-control-lg" placeholder="Email Address" required>
+                    </div>
+                    <div class="mb-4">
+                        <textarea class="form-control form-control-lg" rows="6" placeholder="Your Message" required></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg px-4 py-3 rounded-pill">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

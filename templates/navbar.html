@@ -1,0 +1,134 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <!-- Logo - Controlled from admin -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+            {% if settings.logo %}
+                <img src="{{ settings.logo.url }}" alt="{{ settings.site_name }}" height="80">
+            {% else %}
+                {{ settings.site_name }}
+            {% endif %}
+        </a>
+        
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Navbar Items -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active navfont" href="/">Home</a>
+                </li>
+                
+                {% if sections.about.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#about">About</a>
+                </li>
+                {% endif %}
+                
+                {% if sections.services.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#services">Services</a>
+                </li>
+                {% endif %}
+                
+                {% if sections.features.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#features">Features</a>
+                </li>
+                {% endif %}
+                
+                {% if sections.team.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#team">Team</a>
+                </li>
+                {% endif %}
+                
+                {% if sections.contact.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#contact">Contact</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .navbar {
+        background-color: var(--dark) !important;
+        padding: 15px 0;
+        transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled {
+        background-color: rgba(0, 0, 0, 0.9) !important;
+        padding: 10px 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar-brand img {
+        transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled .navbar-brand img {
+        height: 30px;
+    }
+    
+    .nav-link {
+        color: rgba(255, 255, 255, 0.8) !important;
+        font-weight: 500;
+        margin: 0 8px;
+        position: relative;
+    }
+    
+    .nav-link:hover,
+    .nav-link.active {
+        color: white !important;
+    }
+    
+    .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--primary);
+    }
+</style>
+
+<script>
+    // Add scroll effect to navbar
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Update URL without page reload
+                history.pushState(null, null, targetId);
+            }
+        });
+    });
+</script>
