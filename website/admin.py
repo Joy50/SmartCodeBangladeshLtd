@@ -34,3 +34,52 @@ class PageSectionAdmin(admin.ModelAdmin):
 admin.site.register(Project)
 admin.site.register(News)
 admin.site.register(Career)
+
+
+@admin.register(MediaItem)
+class MediaItemAdmin(admin.ModelAdmin):
+    list_display = ('title', 'media_type', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    list_filter = ('media_type', 'is_active')
+    search_fields = ('title', 'description')
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'media_type', 'order', 'is_active')
+        }),
+        ('Media Content', {
+            'fields': ('image', 'video_url', 'description'),
+            'classes': ('collapse',)
+        }),
+    )
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'description')
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'logo', 'order', 'is_active')
+        }),
+        ('Additional Info', {
+            'fields': ('website', 'description'),
+            'classes': ('collapse',)
+        }),
+    )
+
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ('name', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'description', 'testimonial')
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'logo', 'order', 'is_active')
+        }),
+        ('Client Details', {
+            'fields': ('website', 'description', 'testimonial'),
+            'classes': ('collapse',)
+        }),
+    )

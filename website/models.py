@@ -1,7 +1,4 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from colorfield.fields import ColorField
@@ -80,13 +77,16 @@ class TeamMember(models.Model):
 
 class PageSection(models.Model):
     SECTION_CHOICES = [
-    ('about', 'About Section'),
-    ('services', 'Services Section'),
-    ('projects', 'Projects Section'),
-    ('news', 'News Section'),
-    ('career', 'Career Section'),
-    ('contact', 'Contact Section'),
-    ('team', 'Team Section'),
+        ('about', 'About Section'),
+        ('services', 'Services Section'),
+        ('projects', 'Projects Section'),
+        ('news', 'News Section'),
+        ('career', 'Career Section'),
+        ('contact', 'Contact Section'),
+        ('team', 'Team Section'),
+        ('media', 'Media Section'),
+        ('partners', 'Partners Section'),
+        ('clients', 'Clients Section'),
     ]
     
     section_name = models.CharField(max_length=50, choices=SECTION_CHOICES, unique=True)
@@ -97,7 +97,7 @@ class PageSection(models.Model):
     
     def __str__(self):
         return self.get_section_name_display()
-    
+
 class Project(models.Model):
     STATUS_CHOICES = [
         ('ongoing', 'Ongoing'),
@@ -133,3 +133,53 @@ class Career(models.Model):
 
     def __str__(self):
         return self.title
+
+class MediaItem(models.Model):
+    MEDIA_TYPE_CHOICES = [
+        ('image', 'Image'),
+        ('video', 'Video'),
+    ]
+    
+    title = models.CharField(max_length=200)
+    media_type = models.CharField(max_length=10, choices=MEDIA_TYPE_CHOICES)
+    image = models.ImageField(upload_to='media/', blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True, help_text="URL to YouTube or other video platform")
+    description = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = "Media Items"
+    
+    def __str__(self):
+        return self.title
+
+class Partner(models.Model):
+    name = models.CharField(max_length=200)
+    logo = models.ImageField(upload_to='partners/')
+    website = models.URLField(blank=True)
+    description = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ['order']
+    
+    def __str__(self):
+        return self.name
+
+class Client(models.Model):
+    name = models.CharField(max_length=200)
+    logo = models.ImageField(upload_to='clients/')
+    description = models.TextField()
+    website = models.URLField(blank=True)
+    testimonial = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ['order']
+    
+    def __str__(self):
+        return self.name
