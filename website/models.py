@@ -183,3 +183,29 @@ class Client(models.Model):
     
     def __str__(self):
         return self.name
+
+class Application(models.Model):
+    career = models.ForeignKey(Career, on_delete=models.CASCADE, related_name='applications')
+    full_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    resume = models.FileField(upload_to='resumes/')
+    cover_letter = models.TextField()
+    summary = models.TextField(help_text="Short summary of your qualifications")
+    applied_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('pending', 'Pending'),
+            ('reviewed', 'Reviewed'),
+            ('rejected', 'Rejected'),
+            ('hired', 'Hired')
+        ],
+        default='pending'
+    )
+
+    def __str__(self):
+        return f"{self.full_name} - {self.career.title}"
+
+    class Meta:
+        ordering = ['-applied_at']

@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#career">Careers</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ career.title }}</li>
+                    </ol>
+                </nav>
+                
+                <div class="card shadow border-0 mb-4">
+                    <div class="card-body p-4">
+                        <h1 class="mb-3">{{ career.title }}</h1>
+                        <div class="d-flex flex-wrap gap-3 mb-4">
+                            <span class="badge bg-primary">
+                                <i class="fas fa-map-marker-alt me-1"></i> {{ career.location }}
+                            </span>
+                            <span class="badge bg-secondary">
+                                <i class="far fa-clock me-1"></i> {{ career.posted_at|date:"M d, Y" }}
+                            </span>
+                            <span class="badge {% if career.is_open %}bg-success{% else %}bg-danger{% endif %}">
+                                {% if career.is_open %}Open{% else %}Closed{% endif %}
+                            </span>
+                        </div>
+                        
+                        <div class="career-content mb-4">
+                            {{ career.description|linebreaks }}
+                        </div>
+                        
+                        {% if career.is_open %}
+                        <div class="alert alert-info">
+                            <h5><i class="fas fa-info-circle me-2"></i>How to Apply</h5>
+                            <p class="mb-0">Fill out the application form below and upload your resume. We'll review your application and contact you if there's a match.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if career.is_open %}
+                <div class="card shadow border-0 mt-4">
+                    <div class="card-body p-4">
+                        <h3 class="mb-4"><i class="fas fa-paper-plane me-2"></i>Apply for this Position</h3>
+                        
+                        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            {% if form.errors %}
+                            <div class="alert alert-danger mb-4">
+                                <h5 class="alert-heading">Please correct these errors:</h5>
+                                <ul class="mb-0">
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                        <li>{{ field.label }}: {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="row g-3">
+                                <!-- Full Name -->
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" 
+                                               class="form-control {% if form.full_name.errors %}is-invalid{% endif %}" 
+                                               id="id_full_name" 
+                                               name="full_name" 
+                                               placeholder="John Doe" 
+                                               value="{{ form.full_name.value|default:'' }}"
+                                               required>
+                                        <label for="id_full_name">Full Name*</label>
+                                        <div class="invalid-feedback">
+                                            Please provide your full name.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Email -->
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" 
+                                               class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
+                                               id="id_email" 
+                                               name="email" 
+                                               placeholder="name@example.com" 
+                                               value="{{ form.email.value|default:'' }}"
+                                               required>
+                                        <label for="id_email">Email Address*</label>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid email address.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Phone -->
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" 
+                                               class="form-control {% if form.phone.errors %}is-invalid{% endif %}" 
+                                               id="id_phone" 
+                                               name="phone" 
+                                               placeholder="+1234567890" 
+                                               value="{{ form.phone.value|default:'' }}"
+                                               required>
+                                        <label for="id_phone">Phone Number*</label>
+                                        <div class="invalid-feedback">
+                                            Please provide your phone number.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resume Upload -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="id_resume" class="form-label">Upload Resume (PDF only)*</label>
+                                        <input type="file" 
+                                               class="form-control {% if form.resume.errors %}is-invalid{% endif %}" 
+                                               id="id_resume" 
+                                               name="resume" 
+                                               accept=".pdf,.doc,.docx"
+                                               required>
+                                        <div class="invalid-feedback">
+                                            Please upload your resume (PDF or DOC).
+                                        </div>
+                                        <small class="text-muted">Max file size: 5MB</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Short Summary -->
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="id_summary" class="form-label">Short Resume Summary*</label>
+                                        <textarea class="form-control {% if form.summary.errors %}is-invalid{% endif %}" 
+                                                  id="id_summary" 
+                                                  name="summary" 
+                                                  rows="3"
+                                                  required>{{ form.summary.value|default:'' }}</textarea>
+                                        <div class="invalid-feedback">
+                                            Please provide a brief summary of your qualifications.
+                                        </div>
+                                        <small class="text-muted">Highlight your most relevant experience (200 words max)</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Cover Letter -->
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="id_cover_letter" class="form-label">Cover Letter</label>
+                                        <textarea class="form-control {% if form.cover_letter.errors %}is-invalid{% endif %}" 
+                                                  id="id_cover_letter" 
+                                                  name="cover_letter" 
+                                                  rows="5">{{ form.cover_letter.value|default:'' }}</textarea>
+                                        <div class="invalid-feedback">
+                                            Please provide a cover letter.
+                                        </div>
+                                        <small class="text-muted">Tell us why you're a good fit for this position</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input {% if form.agree_to_terms.errors %}is-invalid{% endif %}" 
+                                               type="checkbox" 
+                                               id="id_agree_to_terms" 
+                                               name="agree_to_terms"
+                                               required>
+                                        <label class="form-check-label" for="id_agree_to_terms">
+                                            I agree to the processing of my personal data according to your <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>*
+                                        </label>
+                                        <div class="invalid-feedback">
+                                            You must agree to the privacy policy.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary px-4 py-2">
+                                        <i class="fas fa-paper-plane me-2"></i>Submit Application
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-warning">
+                    <h5><i class="fas fa-exclamation-triangle me-2"></i>Position Closed</h5>
+                    <p class="mb-0">This position is no longer accepting applications. Please check our other open positions below.</p>
+                </div>
+                {% endif %}
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="#career" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Careers
+                    </a>
+                    {% if career.is_open %}
+                    <a href="#apply" class="btn btn-primary">
+                        <i class="fas fa-paper-plane me-2"></i>Apply Now
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Other Open Positions -->
+{% if open_positions %}
+<section class="py-5">
+    <div class="container py-4">
+        <h3 class="mb-4">Other Open Positions</h3>
+        <div class="row g-4">
+            {% for job in open_positions %}
+            <div class="col-md-6">
+                <div class="card h-100 shadow border-0 transition-all hover-scale">
+                    <div class="card-body">
+                        <h5>{{ job.title }}</h5>
+                        <p class="text-muted">{{ job.location }}</p>
+                        <p class="mb-3">{{ job.description|truncatewords:25 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Posted: {{ job.posted_at|date:"M d, Y" }}</small>
+                            <a href="{% url 'career_detail' job.id %}" class="btn btn-sm btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Data Collection</h6>
+                <p>We collect the personal information you provide when applying for a position, including your name, contact details, resume, and cover letter.</p>
+                
+                <h6>Data Usage</h6>
+                <p>Your information will be used solely for the purpose of evaluating your application for the position you've applied for.</p>
+                
+                <h6>Data Storage</h6>
+                <p>Your application data will be stored securely for up to 12 months after the recruitment process ends.</p>
+                
+                <h6>Your Rights</h6>
+                <p>You have the right to request access to, correction of, or deletion of your personal data at any time.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form Validation Script -->
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+    'use strict'
+    
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+    
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+</script>
+
+<style>
+/* Custom styles for the application form */
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+.hover-scale:hover {
+    transform: translateY(-3px);
+}
+
+/* File input styling */
+.form-control[type="file"] {
+    padding: 0.375rem 0.75rem;
+}
+
+/* Required field indicators */
+label.required:after {
+    content: " *";
+    color: #dc3545;
+}
+
+/* Modal styling */
+.modal-content {
+    border-radius: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+}
+</style>
+{% endblock %}

@@ -34,9 +34,21 @@
                 </li>
                 {% endif %}
                 
-                {% if sections.features.show_section %}
+                {% if sections.projects.show_section %}
                 <li class="nav-item">
-                    <a class="nav-link navfont" href="#features">Features</a>
+                    <a class="nav-link navfont" href="#projects">Projects</a>
+                </li>
+                {% endif %}
+                
+                {% if sections.news.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#news">News</a>
+                </li>
+                {% endif %}
+                
+                {% if sections.career.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#career">Career</a>
                 </li>
                 {% endif %}
                 
@@ -46,12 +58,38 @@
                 </li>
                 {% endif %}
                 
+                {% if sections.media.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#media">Media</a>
+                </li>
+                {% endif %}
+                
+                {% if sections.partners.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#partners">Partners</a>
+                </li>
+                {% endif %}
+                
+                {% if sections.clients.show_section %}
+                <li class="nav-item">
+                    <a class="nav-link navfont" href="#clients">Clients</a>
+                </li>
+                {% endif %}
+                
                 {% if sections.contact.show_section %}
                 <li class="nav-item">
                     <a class="nav-link navfont" href="#contact">Contact</a>
                 </li>
                 {% endif %}
             </ul>
+            <!-- Contact Button with Phone Number -->
+            <div class="d-flex">
+                <a href="tel:{{ settings.phone_number|default:'+8801798606339' }}" class="btn btn-primary ms-2 contact-btn">
+                    <i class="bi bi-telephone-fill me-2"></i>
+                    <span class="d-none d-lg-inline">{{ settings.phone_number|default:'+8801798606339' }}</span>
+                    <span class="d-lg-none">Call Us</span>
+                </a>
+            </div>
         </div>
     </div>
 </nav>
@@ -74,7 +112,7 @@
     }
     
     .navbar.scrolled .navbar-brand img {
-        height: 30px;
+        height: 40px;
     }
     
     .nav-link {
@@ -82,11 +120,13 @@
         font-weight: 500;
         margin: 0 8px;
         position: relative;
+        transition: all 0.2s ease;
     }
     
     .nav-link:hover,
     .nav-link.active {
         color: white !important;
+        transform: translateY(-2px);
     }
     
     .nav-link.active::after {
@@ -97,6 +137,38 @@
         width: 100%;
         height: 2px;
         background-color: var(--primary);
+        transform: scaleX(1);
+        transition: transform 0.3s ease;
+    }
+    
+    .nav-link:not(.active)::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--primary);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+        transform: scaleX(1);
+    }
+    
+    @media (max-width: 992px) {
+        .navbar-brand img {
+            height: 50px !important;
+        }
+        
+        .navbar.scrolled .navbar-brand img {
+            height: 40px !important;
+        }
+        
+        .nav-item {
+            margin: 5px 0;
+        }
     }
 </style>
 
@@ -126,8 +198,34 @@
                     behavior: 'smooth'
                 });
                 
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+                
                 // Update URL without page reload
                 history.pushState(null, null, targetId);
+            }
+        });
+    });
+    
+    // Highlight active section on scroll
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY + 100;
+        
+        document.querySelectorAll('section[id]').forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                const id = section.getAttribute('id');
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
             }
         });
     });

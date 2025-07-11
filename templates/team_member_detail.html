@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 bg-light mt-5">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <div class="card shadow border-0 text-center">
+                    <div class="card-body p-4">
+                        <img src="{{ member.image.url }}" 
+                             class="img-fluid rounded-circle mb-3" 
+                             alt="{{ member.name }}"
+                             style="width: 200px; height: 200px; object-fit: cover;">
+                        <h3 class="mb-1">{{ member.name }}</h3>
+                        <p class="text-muted mb-3">{{ member.position }}</p>
+                        
+                        <div class="d-flex justify-content-center gap-3 mb-4">
+                            {% if member.facebook %}
+                            <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer" class="text-primary fs-4"><i class="fab fa-facebook-f"></i></a>
+                            {% endif %}
+                            {% if member.twitter %}
+                            <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer" class="text-info fs-4"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                            {% if member.linkedin %}
+                            <a href="{{ member.linkedin }}" target="_blank" rel="noopener noreferrer" class="text-primary fs-4"><i class="fab fa-linkedin-in"></i></a>
+                            {% endif %}
+                        </div>
+                        
+                        <a href="#team" class="btn btn-outline-primary w-100">Back to Team</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                
+                <h2 class="mb-4">About {{ member.name }}</h2>
+                <div class="member-bio">
+                    {{ member.bio|linebreaks }}
+                </div>
+                
+                <div class="mt-5">
+                    <h4 class="mb-3">Contact {{ member.name }}</h4>
+                    <a href="#contact" class="btn btn-primary">Send Message</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

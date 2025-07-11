@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 mt-5">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                
+                <article>
+                    <header class="mb-4">
+                        <h1 class="fw-bold mb-3">{{ news.title }}</h1>
+                        <div class="text-muted mb-4">
+                            Published on {{ news.published_at|date:"F j, Y" }}
+                        </div>
+                        <img src="{{ news.image.url }}" alt="{{ news.title }}" class="img-fluid rounded mb-4 shadow">
+                    </header>
+                    
+                    <div class="news-content mb-5">
+                        <p class="lead">{{ news.summary }}</p>
+                        {{ news.content|linebreaks }}
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="#news" class="btn btn-outline-primary">Back to News</a>
+                        <div class="share-buttons">
+                            <span class="text-muted me-2">Share:</span>
+                            <a href="#" class="text-primary me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-info me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-primary"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related News Section -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <h3 class="mb-4">More News</h3>
+        <div class="row g-4">
+            {% for related_news in recent_news %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow border-0">
+                    <img src="{{ related_news.image.url }}" class="card-img-top" alt="{{ related_news.title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ related_news.title }}</h5>
+                        <p class="card-text">{{ related_news.summary|truncatewords:20 }}</p>
+                        <a href="{% url 'news_detail' related_news.id %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

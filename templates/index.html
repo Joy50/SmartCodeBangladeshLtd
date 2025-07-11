@@ -36,11 +36,11 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
 
 <!-- SERVICES SECTION -->
 {% if sections.services.show_section %}
-<section class="py-5 parallax text-white" style="background-color: {{ sections.services.background_color }}; background-image: url('{% static 'img/services-bg.jpg' %}'); background-attachment: fixed; background-size: cover; background-position: center;" id="services">
+<section class="py-5 parallax" style="background-color: {{ sections.services.background_color }}; background-image: url('{% static 'img/services-bg.jpg' %}'); background-attachment: fixed; background-size: cover; background-position: center;" id="services">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h1>{{ sections.services.title }}</h1>
-            <p>{{ sections.services.subtitle }}</p>
+            <h1 class="text-white">{{ sections.services.title }}</h1>
+            <p class="text-white">{{ sections.services.subtitle }}</p>
         </div>
         <div class="row g-4">
             {% for service in services %}
@@ -50,6 +50,7 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
                         <div class="mb-3"><i class="{{ service.icon_class }} fs-1 text-primary"></i></div>
                         <h5 class="card-title" style="color: black;">{{ service.title }}</h5>
                         <p class="card-text" style="text-align: justify; color: black;">{{ service.description }}</p>
+                        <a href="{% url 'service_detail' service.id %}" class="btn btn-sm btn-outline-primary mt-2">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -67,26 +68,30 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
             <h2>{{ sections.media.title }}</h2>
             <p>{{ sections.media.subtitle }}</p>
         </div>
-        
+
         {% if media_items %}
         <div class="row">
             <div class="col-12">
                 <div class="owl-carousel media-slider">
                     {% for media in media_items %}
-                    <div class="item">
+                    <div class="item" style="height: 500px;"> <!-- Fixed height for all items -->
                         {% if media.media_type == 'image' %}
-                        <div class="media-image-container">
-                            <img src="{{ media.image.url }}" alt="{{ media.title }}" class="img-fluid rounded shadow">
+                        <div class="media-image-container h-100 d-flex align-items-center justify-content-center">
+                            <img src="{{ media.image.url }}" alt="{{ media.title }}"
+                                 class="img-fluid rounded shadow mh-100"
+                                 style="max-height: 400px; width: auto; object-fit: contain;">
                         </div>
                         {% else %}
-                        <div class="ratio ratio-16x9">
-                            <iframe src="{{ media.video_url }}" allowfullscreen></iframe>
+                        <div class="ratio ratio-16x9 h-100">
+                            <iframe src="{{ media.video_url }}" allowfullscreen
+                                    style="height: 400px;"></iframe>
                         </div>
                         {% endif %}
+                        <!-- WHITE TEXT CAPTION (ALWAYS) -->
                         {% if media.title or media.description %}
-                        <div class="media-caption mt-3 text-center">
-                            {% if media.title %}<h5>{{ media.title }}</h5>{% endif %}
-                            {% if media.description %}<p class="mb-0">{{ media.description }}</p>{% endif %}
+                        <div class="media-caption mt-3 text-center text-white" style="height: 100px; overflow: hidden;">
+                            {% if media.title %}<h5 class="text-white">{{ media.title }}</h5>{% endif %}
+                            {% if media.description %}<p class="mb-0 text-white">{{ media.description }}</p>{% endif %}
                         </div>
                         {% endif %}
                     </div>
@@ -101,15 +106,31 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
         {% endif %}
     </div>
 </section>
+
+<style>
+    .media-slider .item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .owl-carousel .owl-stage {
+        display: flex;
+        align-items: stretch;
+    }
+    .owl-carousel .owl-item {
+        display: flex;
+        height: auto;
+    }
+</style>
 {% endif %}
 
 <!-- PROJECTS SECTION -->
 {% if sections.projects.show_section %}
-<section id="projects" class="py-5 text-white" style="background-color: {{ sections.projects.background_color }};">
+<section id="projects" class="py-5" style="background-color: {{ sections.projects.background_color }};">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2>{{ sections.projects.title }}</h2>
-            <p>{{ sections.projects.subtitle }}</p>
+            <h2 class="text-white">{{ sections.projects.title }}</h2>
+            <p class="text-white">{{ sections.projects.subtitle }}</p>
         </div>
         <div class="mb-4 text-center">
             <button class="btn btn-primary filter-btn" data-filter="all">All</button>
@@ -125,6 +146,7 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
                     <div class="card-body">
                         <h5 class="card-title" style="color: black;">{{ project.title }}</h5>
                         <p class="card-text" style="color: black;">{{ project.description|truncatewords:20 }}</p>
+                        <div class="container"><div class="d-flex justify-content-center mt-4"><a href="{% url 'project_detail' project.id %}" class="btn btn-sm btn-primary">View Details</a></div></div>
                     </div>
                 </div>
             </div>
@@ -170,29 +192,29 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
 
 <!-- CLIENTS SECTION -->
 {% if sections.clients.show_section %}
-<section id="clients" class="py-5 text-white" style="background-color: {{ sections.clients.background_color }};">
+<section id="clients" class="py-5" style="background-color: {{ sections.clients.background_color }};">
     <div class="container py-5">
-        <div class="text-center mb-5">
-            <h2>{{ sections.clients.title }}</h2>
-            <p>{{ sections.clients.subtitle }}</p>
+        <div class="text-center mb-5">  <!-- Added text-black -->
+            <h2 class="text-white">{{ sections.clients.title }}</h2>
+            <p class="text-white">{{ sections.clients.subtitle }}</p>
         </div>
         <div class="row g-4">
             {% for client in clients %}
             <div class="col-lg-4 col-md-6 animate__animated animate__fadeInUp">
-                <div class="card h-100 shadow border-0 text-dark">
-                    <div class="card-body text-center">
+                <div class="card h-100 shadow border-0 bg-white">  <!-- Changed to bg-white -->
+                    <div class="card-body text-center text-black">  <!-- Added text-black -->
                         <div class="mb-3">
                             <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="img-fluid" style="max-height: 80px; width: auto;">
                         </div>
                         <h5 class="card-title">{{ client.name }}</h5>
                         <p class="card-text" style="text-align: justify;">{{ client.description }}</p>
                         {% if client.testimonial %}
-                        <div class="mt-3 p-3 bg-light rounded">
-                            <p class="mb-0 fst-italic" style="text-align: justify;">"{{ client.testimonial }}"</p>
+                        <div class="mt-3 p-3 bg-light rounded">  <!-- Kept bg-light for contrast -->
+                            <p class="mb-0 fst-italic text-black" style="text-align: justify;">"{{ client.testimonial }}"</p>
                         </div>
                         {% endif %}
                         {% if client.website %}
-                        <a href="{{ client.website }}" target="_blank" class="btn btn-sm btn-outline-primary mt-3">Visit Website</a>
+                        <a href="{{ client.website }}" target="_blank" class="btn btn-sm btn-outline-dark mt-3">Visit Website</a>  <!-- Changed to btn-outline-dark -->
                         {% endif %}
                     </div>
                 </div>
@@ -205,7 +227,7 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
 
 <!-- TEAM SECTION -->
 {% if sections.team.show_section %}
-<section id="team" class="py-5 text-white" style="background-color: {{ sections.team.background_color }};">
+<section id="team" class="py-5 position-relative" style="background-color: {{ sections.team.background_color }};">
     <div class="container py-5">
         <div class="text-center mb-5">
             <h2>{{ sections.team.title }}</h2>
@@ -214,28 +236,29 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
         <div class="row g-4">
             {% for member in team %}
             <div class="col-lg-3 col-md-6 animate__animated animate__fadeInUp">
-                <div class="card h-100 shadow border-0 text-center text-dark team-member-card" style="color: black;">
+                <div class="card h-100 shadow border-0 text-center transition-all hover-scale">
                     <div class="p-3 d-flex justify-content-center">
-                        <img src="{{ member.image.url }}" 
-                             class="img-fluid" 
-                             alt="{{ member.name }}" 
-                             style="max-height: 200px; width: auto; max-width: 100%;">
+                        <img src="{{ member.image.url }}"
+                             class="img-fluid rounded-circle"
+                             alt="{{ member.name }}"
+                             style="width: 150px; height: 150px; object-fit: cover;">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title" style="color: black;">{{ member.name }}</h5>
+                        <h5 class="card-title">{{ member.name }}</h5>
                         <p class="text-muted">{{ member.position }}</p>
-                        <p class="card-text" style="text-align: justify; color: black;">{{ member.bio|truncatewords:20 }}</p>
+                        <p class="card-text" style="text-align: justify;">{{ member.bio|truncatewords:20 }}</p>
                         <div class="d-flex justify-content-center gap-3">
                             {% if member.facebook %}
-                            <a href="{{ member.facebook }}" class="text-primary"><i class="fab fa-facebook-f"></i></a>
+                            <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer" class="text-primary"><i class="fab fa-facebook-f"></i></a>
                             {% endif %}
                             {% if member.twitter %}
-                            <a href="{{ member.twitter }}" class="text-info"><i class="fab fa-twitter"></i></a>
+                            <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer" class="text-info"><i class="fab fa-twitter"></i></a>
                             {% endif %}
                             {% if member.linkedin %}
-                            <a href="{{ member.linkedin }}" class="text-primary"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="{{ member.linkedin }}" target="_blank" rel="noopener noreferrer" class="text-primary"><i class="fab fa-linkedin-in"></i></a>
                             {% endif %}
                         </div>
+                        <a href="{% url 'team_member_detail' member.id %}" class="btn btn-sm btn-outline-primary mt-3">View Profile</a>
                     </div>
                 </div>
             </div>
@@ -245,13 +268,14 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
 </section>
 {% endif %}
 
+
 <!-- NEWS SECTION -->
 {% if sections.news.show_section %}
-<section id="news" class="py-5 text-white" style="background-color: {{ sections.news.background_color }};">
+<section id="news" class="py-5" style="background-color: {{ sections.news.background_color }};">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2>{{ sections.news.title }}</h2>
-            <p>{{ sections.news.subtitle }}</p>
+            <h2 class="text-white">{{ sections.news.title }}</h2>
+            <p class="text-white">{{ sections.news.subtitle }}</p>
         </div>
         <div class="row g-4">
             {% for news in news_list %}
@@ -262,6 +286,7 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
                         <h5 class="card-title" style="color: black;">{{ news.title }}</h5>
                         <p class="card-text" style="color: black;">{{ news.summary|truncatewords:20 }}</p>
                         <p class="text-muted small">{{ news.published_at|date:"M d, Y" }}</p>
+                        <div class="container"><div class="d-flex justify-content-center mt-4"><a href="{% url 'news_detail' news.id %}" class="btn btn-sm btn-outline-primary mt-2">Read More</a></div></div>
                     </div>
                 </div>
             </div>
@@ -273,19 +298,25 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
 
 <!-- CAREER SECTION -->
 {% if sections.career.show_section %}
-<section id="career" class="py-5 text-white" style="background-color: {{ sections.career.background_color }};">
+<section id="career" class="py-5" style="background-color: {{ sections.career.background_color }};">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2>{{ sections.career.title }}</h2>
-            <p>{{ sections.career.subtitle }}</p>
+            <h2 class="text-white">{{ sections.career.title }}</h2>
+            <p class="text-white">{{ sections.career.subtitle }}</p>
         </div>
         <div class="row g-4">
             {% for job in careers %}
-            <div class="col-md-6">
-                <div class="p-4 bg-light border rounded shadow-sm text-dark" style="color: black;">
-                    <h5 style="color: black;">{{ job.title }}</h5>
-                    <p style="color: black;">{{ job.description|truncatewords:25 }}</p>
-                    <p class="text-muted small">Location: {{ job.location }} | Posted: {{ job.posted_at|date:"M d, Y" }}</p>
+            <div class="col-md-6 d-flex">
+                <div class="p-4 bg-light border rounded shadow-sm w-100 d-flex flex-column" style="height: 300px;">
+                    <h5 class="text-dark">{{ job.title }}</h5>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-dark mb-2">{{ job.description|truncatewords:25 }}</p>
+                    </div>
+                    <div class="mt-auto">
+                        <p class="text-muted small mb-0">Location: {{ job.location }}</p>
+                        <p class="text-muted small mb-0">Posted: {{ job.posted_at|date:"M d, Y" }}</p>
+                    </div>
+                    <div class="container"><div class="d-flex justify-content-center mt-4"><a href="{% url 'career_detail' job.id %}" class="btn btn-sm btn-primary">Apply Now</a></div></div>
                 </div>
             </div>
             {% endfor %}
@@ -296,11 +327,11 @@ Founded on the principles of integrity, excellence, and customer satisfaction, S
 
 <!-- CONTACT SECTION -->
 {% if sections.contact.show_section %}
-<section class="py-5 text-white" style="background-color: {{ sections.contact.background_color }};" id="contact">
+<section class="py-5" style="background-color: {{ sections.contact.background_color }};" id="contact">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2>{{ sections.contact.title }}</h2>
-            <p>{{ sections.contact.subtitle }}</p>
+            <h2 class="text-white">{{ sections.contact.title }}</h2>
+            <p class="text-white">{{ sections.contact.subtitle }}</p>
         </div>
         <div class="row">
             <div class="col-lg-7 mx-auto animate__animated animate__fadeInUp">

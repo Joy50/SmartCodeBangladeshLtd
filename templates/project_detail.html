@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 bg-light mt-5">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                
+                <h1 class="display-5 fw-bold mb-4">{{ project.title }}</h1>
+                
+                <div class="mb-4">
+                    <span class="badge 
+                        {% if project.status == 'ongoing' %}bg-warning text-dark
+                        {% elif project.status == 'completed' %}bg-success
+                        {% else %}bg-info{% endif %}">
+                        {{ project.get_status_display }}
+                    </span>
+                    <span class="text-muted ms-2">{{ project.created_at|date:"M d, Y" }}</span>
+                </div>
+                
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid rounded mb-4 shadow">
+                
+                <div class="project-content">
+                    {{ project.description|linebreaks }}
+                </div>
+                
+                <div class="d-flex justify-content-between mt-5">
+                    <a href="#projects" class="btn btn-outline-primary">Back to Projects</a>
+                    <div>
+                        {% if project.status == 'ongoing' %}
+                        <a href="#contact" class="btn btn-primary">Get Involved</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

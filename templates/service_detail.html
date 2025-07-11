@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 mt-5" style="background-color: {{ service.color }}20;">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#services">Services</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ service.title }}</li>
+                    </ol>
+                </nav>
+                
+                <h1 class="display-5 fw-bold mb-4">{{ service.title }}</h1>
+                <div class="mb-4"><i class="{{ service.icon_class }} fs-1" style="color: {{ service.color }};"></i></div>
+                <div class="service-content">
+                    {{ service.description|linebreaks }}
+                </div>
+                <a href="#contact" class="btn btn-primary mt-3">Contact Us</a>
+            </div>
+            <div class="col-lg-6">
+                <div class="card shadow border-0">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Related Services</h4>
+                        <div class="list-group">
+                            {% for related_service in services %}
+                            {% if related_service.id != service.id %}
+                            <a href="{% url 'service_detail' related_service.id %}" 
+                               class="list-group-item list-group-item-action d-flex align-items-center">
+                                <i class="{{ related_service.icon_class }} me-3" style="color: {{ related_service.color }};"></i>
+                                {{ related_service.title }}
+                            </a>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
